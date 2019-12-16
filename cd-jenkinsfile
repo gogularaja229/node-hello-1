@@ -25,8 +25,8 @@ pipeline{
                         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'gogularaja-azure-git', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
                         {
                             sh '''
-                                cd $params.CI_WORKSPACE
-                                cp -R * /var/lib/jenkins/workspace/local-git/release/
+                                cd /var/lib/jenkins/workspace/local-git/release/
+                                cp -R $params.CI_WORKSPACE/* .
                                 git config user.email "gogularaja.sr@gmail.com"
                                 git config user.name "gogularaja"
                                 git add .
