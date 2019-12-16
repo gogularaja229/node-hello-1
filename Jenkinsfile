@@ -14,8 +14,13 @@ pipeline{
     }
     post{
         success{
-            build(job: "dgnu_cd/",
-            parameters: [string: 'GITHUB_BRANCH', value: env.BRANCH_NAME])        
+            script{
+            echo "${env.WORKSPACE}"
+            echo "${env.BRANCH_NAME}"
+            build job: 'CD_project-datascape-ui',
+            parameters: [ string(name: 'GITHUB_BRANCH', value: env.BRANCH_NAME), 
+                          string(name:'CI_WORKSPACE', value: env.WORKSPACE)]
+            }
         }    
     }
 }
