@@ -19,7 +19,7 @@ pipeline{
                     {
                         echo "master branch"
                     }
-                    else if("${params.GITHUB_BRANCH}" == "release")
+                    else if("${params.GITHUB_BRANCH}" ==~ "/release*/")
                     {
                         echo "release branch"
                     }
