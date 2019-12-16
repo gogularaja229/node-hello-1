@@ -24,8 +24,8 @@ pipeline{
                         echo "release branch"
                         withCredentials([usernamePassword(credentialsId:'gogularaja-azure-git',usernameVariable:'uname',passwordVariable:'pwd')])
                         {
-                            sh "echo ${uname}"
-                            sh "echo ${password}"
+                            sh "echo $uname"
+                            sh "echo $password"
                         }
                     }
                     else if("${params.GITHUB_BRANCH}" == "develop")
