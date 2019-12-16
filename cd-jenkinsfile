@@ -1,0 +1,22 @@
+pipeline{
+    agent any
+    environment {
+        TODAY = sh(script: "date +%Y-%m-%d_%H-%M-%S", returnStdout: true).trim()
+    }
+    
+    parameters{
+        string(name:'GITHUB_BRANCH',description:'Provid the branch name to implement CD')
+        string(name: 'CI_WORKSPACE', description: 'Provide the workspace path of the CI job')
+    }
+    
+    stages{
+        stage('notification'){
+            steps{
+                script{
+                    sh "echo ${params.GITHUB_BRANCH}"
+                    sh "echo ${params.CI_WORKSPACE}"
+                }
+            }        
+        }
+    }
+}
