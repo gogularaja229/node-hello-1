@@ -2,6 +2,10 @@ pipeline{
     agent any
     environment {
         TODAY = sh(script: "date +%Y-%m-%d_%H-%M-%S", returnStdout: true).trim()
+        AZURE_GITHUB_USERNAME = "gogularaja"
+        AZURE_GITHUB_EMAIL = "gogularaja.sr@gmail.com"
+        AZURE_LOCAL_GITHUB_PATH = "/var/lib/jenkins/workspace/local-git/release/nodejs-app1"
+        AZURE_LOCAL_GITHUB_CLONE_URL = "nodejs-app1.scm.azurewebsites.net:443/nodejs-app1.git"
     }
     
     parameters{
@@ -10,11 +14,9 @@ pipeline{
     }
     
     stages{
-        stage('notification'){
+        stage('deployment'){
             steps{
                 script{
-                    sh "echo ${params.GITHUB_BRANCH}"
-                    sh "echo ${params.CI_WORKSPACE}"
                     if("${params.GITHUB_BRANCH}" == "master")
                     {
                         echo "master branch"
@@ -24,14 +26,14 @@ pipeline{
                         echo "release branch"
                         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'gogularaja-azure-git', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
                         {
+                            sh "cp -R ${params.CI_WORKSPACE}/* ${AZURE_LOCAL_GITHUB_PATH}"
                             sh '''
-                                cd /var/lib/jenkins/workspace/local-git/release/
-                                echo ${params.CI_WORKSPACE}
-                                git config user.email "gogularaja.sr@gmail.com"
-                                git config user.name "gogularaja"
+                                cd ${AZURE_LOCAL_GITHUB_PATH}
+                                git config user.email "${AZURE_GITHUB_EMAIL}"
+                                git config user.name "${AZURE_GITHUB_USERNAME}"
                                 git add .
-                                git commit -m "new change $dt"
-                                git push https://$USERNAME:$PASSWORD@nodejs-app1.scm.azurewebsites.net:443/nodejs-app1.git
+                                git commit -m "new change ${TODAY}"
+                                git push https://$USERNAME:$PASSWORD@${AZURE_LOCAL_GITHUB_CLONE_URL}
                             '''
                         }
                     }
