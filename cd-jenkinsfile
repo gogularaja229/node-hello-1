@@ -15,6 +15,22 @@ pipeline{
                 script{
                     sh "echo ${params.GITHUB_BRANCH}"
                     sh "echo ${params.CI_WORKSPACE}"
+                    if("${params.GITHUB_BRANCH}" == "master")
+                    {
+                        echo "master branch"
+                    }
+                    else if("${params.GITHUB_BRANCH}" == "release")
+                    {
+                        echo "release branch"
+                    }
+                    else if("${params.GITHUB_BRANCH}" == "develop")
+                    {
+                        echo "develop branch"
+                    }
+                    else
+                    {
+                        echo "required branch does not exists"
+                    }
                 }
             }        
         }
