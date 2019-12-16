@@ -2,9 +2,10 @@ pipeline{
     agent any
     environment {
         TODAY = sh(script: "date +%Y-%m-%d_%H-%M-%S", returnStdout: true).trim()
+        PROJECT_NAME = "nodejs-app1"
         AZURE_GITHUB_USERNAME = "gogularaja"
         AZURE_GITHUB_EMAIL = "gogularaja.sr@gmail.com"
-        AZURE_LOCAL_GITHUB_PATH = "/var/lib/jenkins/workspace/local-git/release/nodejs-app1"
+        AZURE_LOCAL_GITHUB_PATH = "/var/lib/jenkins/workspace/local-git"
         AZURE_LOCAL_GITHUB_CLONE_URL = "nodejs-app1.scm.azurewebsites.net:443/nodejs-app1.git"
     }
     
@@ -26,9 +27,9 @@ pipeline{
                         echo "release branch"
                         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'gogularaja-azure-git', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
                         {
-                            sh "cp -R ${params.CI_WORKSPACE}/* ${AZURE_LOCAL_GITHUB_PATH}"
+                            sh "cp -R ${params.CI_WORKSPACE}/* ${AZURE_LOCAL_GITHUB_PATH}/release/${PROJECT_NAME}"
                             sh '''
-                                cd ${AZURE_LOCAL_GITHUB_PATH}
+                                cd ${AZURE_LOCAL_GITHUB_PATH}/release/${PROJECT_NAME}
                                 git config user.email "${AZURE_GITHUB_EMAIL}"
                                 git config user.name "${AZURE_GITHUB_USERNAME}"
                                 git add .
