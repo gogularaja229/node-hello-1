@@ -4,13 +4,18 @@ pipeline{
         TODAY = sh(script: "date +%Y-%m-%d_%H-%M-%S", returnStdout: true).trim()
     }
     stages{
-        stage('Remove the existing downloaded build files'){
+        stage('notification'){
             steps{
                 sh '''
-                    mkdir test1234
-                    mkdir $TODAY
+                   echo "build started"                     
                 '''
             }
-        }
+        }        
+    }
+    post{
+        success{
+            build(job: "dgnu_cd/",
+            parameters: [string: 'GITHUB_BRANCH', value: env.BRANCH_NAME])        
+        }    
     }
 }
