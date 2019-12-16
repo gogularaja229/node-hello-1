@@ -24,8 +24,10 @@ pipeline{
                         echo "release branch"
                         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'gogularaja-azure-git', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
                         {
-                            sh "echo $USERNAME"
-                            sh "echo $PASSWORD"
+                            sh '''
+                                echo $USERNAME
+                                echo $PASSWORD
+                            '''
                         }
                     }
                     else if("${params.GITHUB_BRANCH}" == "develop")
