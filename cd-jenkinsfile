@@ -19,7 +19,7 @@ pipeline{
                     {
                         echo "master branch"
                     }
-                    else if(env.BRANCH_NAME.startsWith("release"))
+                    else if(params.GITHUB_BRANCH.startsWith("release"))
                     {
                         echo "release branch"
                     }
