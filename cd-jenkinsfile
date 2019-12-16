@@ -26,7 +26,7 @@ pipeline{
                         {
                             sh '''
                                 cd /var/lib/jenkins/workspace/local-git/release/
-                                cp -R $params.CI_WORKSPACE/* .
+                                cp -R ${params.CI_WORKSPACE}/* .
                                 git config user.email "gogularaja.sr@gmail.com"
                                 git config user.name "gogularaja"
                                 git add .
